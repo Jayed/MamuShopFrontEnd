@@ -21,6 +21,7 @@ const Sales = () => {
   const axiosPublic = useAxiosPublic();
   // Fetch customer
   const [customers] = useCustomers();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Helper functions
   console.log("selectedCustomer:", selectedCustomer);
@@ -69,7 +70,7 @@ const Sales = () => {
 
   // Add product to selectedProducts with a default selling amount of 1
   const addProductToSale = (product) => {
-    console.log(product);
+    // console.log(product);
     const isAlreadySelected = selectedProducts.some(
       (selectedProduct) => selectedProduct._id === product._id
     );
@@ -130,6 +131,7 @@ const Sales = () => {
 
     // If confirmed, proceed with the sale submission
     if (result.isConfirmed) {
+      setIsLoading(true);
       try {
         const response = await axiosPublic.post("/sale", {
           customer: selectedCustomer,
@@ -149,6 +151,7 @@ const Sales = () => {
         console.error("Error:", error);
         Swal.fire("Error", "Failed to complete sale.", "error");
       }
+      setIsLoading(false);
     }
   };
 
@@ -173,6 +176,17 @@ const Sales = () => {
       }
     });
   };
+  // Loader
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full space-y-2 mt-12">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500 border-solid"></div>
+        <p className="text-blue-500 text-lg font-semibold">
+          Sales is Executing...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="m-12">

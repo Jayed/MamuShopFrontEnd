@@ -22,9 +22,7 @@ const ManageProducts = () => {
 
   // Fetch products when the component mounts
   const fetchProducts = async () => {
-    const response = await fetch(
-      "https://store-management-app-server.vercel.app/products"
-    );
+    const response = await fetch("http://localhost:5005/products");
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
@@ -43,23 +41,28 @@ const ManageProducts = () => {
     queryFn: fetchProducts,
   });
 
-  // Sort products by subCategory, subsubCategory, and brand
+  // Handle Pagination Changes (without re-triggering products fetch)
   useEffect(() => {
-    const sortedProducts = [...products].sort((a, b) => {
-      if (a.subCategory === b.subCategory) {
-        if (a.subsubCategory === b.subsubCategory) {
-          return a.brand.localeCompare(b.brand); // Sort by brand if subCategory and subsubCategory are the same
+    if (products.length > 0) {
+      const sortedProducts = [...products].sort((a, b) => {
+        // Sort by brand in descending order (Z to A)
+        if (a.brand !== b.brand) {
+          return b.brand.localeCompare(a.brand);
         }
-        return a.subsubCategory.localeCompare(b.subsubCategory); // Sort by subsubCategory if subCategory is the same
-      }
-      return a.subCategory.localeCompare(b.subCategory); // Sort by subCategory first
-    });
+        // Sort by subCategory in ascending order if brands are the same
+        if (a.subCategory !== b.subCategory) {
+          return a.subCategory.localeCompare(b.subCategory);
+        }
+        // Sort by subsubCategory in ascending order if brands and subCategory are the same
+        return a.subsubCategory.localeCompare(b.subsubCategory);
+      });
 
-    setPageCount(Math.ceil(sortedProducts.length / itemsPerPage));
-    setCurrentItems(
-      sortedProducts.slice(itemOffset, itemOffset + itemsPerPage)
-    );
-  }, [products, itemOffset, itemsPerPage]);
+      setPageCount(Math.ceil(sortedProducts.length / itemsPerPage));
+      setCurrentItems(
+        sortedProducts.slice(itemOffset, itemOffset + itemsPerPage)
+      );
+    }
+  }, [products, itemOffset]);
 
   // Handle pagination click
   const handlePageClick = (event) => {

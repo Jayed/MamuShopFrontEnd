@@ -19,7 +19,7 @@ const ManageCategory = () => {
 
   // Fetch categories using the custom hook
   const [categories, refetch, isPending] = useCategories();
-
+  // Loader
   if (isPending) {
     return (
       <div className="flex flex-col items-center justify-center h-full space-y-2 mt-12">
@@ -30,9 +30,9 @@ const ManageCategory = () => {
       </div>
     );
   }
-  // Sort categories alphabetically by name
+  // Sort categories alphabetically by name, ignoring case and trimming whitespace
   const sortedCategories = [...categories].sort((a, b) =>
-    a.name.localeCompare(b.name)
+    a.name.trim().toLowerCase().localeCompare(b.name.trim().toLowerCase())
   );
 
   // Handle Delete

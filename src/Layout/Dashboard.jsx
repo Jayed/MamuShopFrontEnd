@@ -7,7 +7,7 @@ const Dashboard = () => {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  console.log("isSidebarOpen", isSidebarOpen);
+  // console.log("isSidebarOpen", isSidebarOpen);
 
   return (
     <div className="flex min-h-screen relative">

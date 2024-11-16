@@ -30,11 +30,17 @@ const ManageSubcategory = () => {
   }
   // Sort subCategories by category name first, then by subcategory name
   const sortedSubCategories = [...subcategories].sort((a, b) => {
-    const categoryComparison = a.categoryName.localeCompare(b.categoryName);
+    const categoryComparison = a.categoryName
+      .trim()
+      .toLowerCase()
+      .localeCompare(b.categoryName.trim().toLowerCase());
     if (categoryComparison !== 0) {
       return categoryComparison; // If categories are different, sort by category
     }
-    return a.name.localeCompare(b.name); // If categories are the same, sort by subcategory name
+    return a.name
+      .trim()
+      .toLowerCase()
+      .localeCompare(b.name.trim().toLowerCase()); // If categories are the same, sort by subcategory name
   });
   // Handle Delete
   const handleDeleteItem = (item) => {

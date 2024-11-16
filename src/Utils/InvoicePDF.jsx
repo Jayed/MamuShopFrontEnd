@@ -14,7 +14,13 @@ import signature from "../assets/signature.png";
 // Define styles for the PDF document
 const styles = StyleSheet.create({
   page: { padding: 30, fontSize: 12 },
-  section: { marginBottom: 10 },
+  section: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
   header: {
     display: "flex",
     flexDirection: "row",
@@ -86,8 +92,8 @@ const InvoicePDF = ({
 
         {/* Invoice Number and Date */}
         <View style={styles.section}>
+          <Text>Issued Date: {new Date(date).toLocaleDateString("en-CA")}</Text>
           <Text>Invoice Number: {invoiceNumber}</Text>
-          <Text>IssuedDate: {new Date(date).toLocaleDateString("en-CA")}</Text>
         </View>
 
         {/* Customer Information */}
@@ -118,10 +124,11 @@ const InvoicePDF = ({
               <Text style={styles.cell}>
                 {index + 1}. {product.productName}
               </Text>
-              <Text style={styles.cell}>${product.price}</Text>
+              <Text style={styles.cell}>{product.price.toFixed(2)}</Text>
               <Text style={styles.cell}>{product.quantity}</Text>
               <Text style={styles.cell}>
-                ${(product.price * product.quantity).toFixed(2)}
+                {(product.price * product.quantity).toFixed(2)}
+                {" /="}
               </Text>
             </View>
           ))}
@@ -130,7 +137,7 @@ const InvoicePDF = ({
         {/* Total Price */}
         <View style={styles.totalSection}>
           <Text style={styles.totalText}>
-            Total Price: ${totalPrice.toFixed(2)}
+            Total Price: {totalPrice.toFixed(2)}{" /="}
           </Text>
         </View>
 

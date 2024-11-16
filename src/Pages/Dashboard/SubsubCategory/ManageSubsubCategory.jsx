@@ -29,13 +29,17 @@ const ManageSubsubCategory = () => {
 
   // Sort subsubcategories by subcategory name first, then by subsubcategory name
   const sortedSubsubcategories = [...subsubcategories].sort((a, b) => {
-    const subcategoryComparison = a.subcategoryName.localeCompare(
-      b.subcategoryName
-    );
+    const subcategoryComparison = a.subcategoryName
+      .trim()
+      .toLowerCase()
+      .localeCompare(b.subcategoryName.trim().toLowerCase());
     if (subcategoryComparison !== 0) {
-      return subcategoryComparison;
+      return subcategoryComparison; // Sort by subcategory name if they differ
     }
-    return a.name.localeCompare(b.name);
+    return a.name
+      .trim()
+      .toLowerCase()
+      .localeCompare(b.name.trim().toLowerCase()); // Sort by subsubcategory name if subcategory names are the same
   });
 
   // Handle Delete
