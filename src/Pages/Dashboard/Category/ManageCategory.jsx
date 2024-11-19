@@ -31,9 +31,9 @@ const ManageCategory = () => {
     );
   }
   // Sort categories alphabetically by name, ignoring case and trimming whitespace
-  const sortedCategories = [...categories].sort((a, b) =>
-    a.name.trim().toLowerCase().localeCompare(b.name.trim().toLowerCase())
-  );
+  // const sortedCategories = [...categories].sort((a, b) =>
+  //   a.name.trim().toLowerCase().localeCompare(b.name.trim().toLowerCase())
+  // );
 
   // Handle Delete
   const handleDeleteItem = (item) => {
@@ -213,7 +213,7 @@ const ManageCategory = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedCategories.map((item, index) => (
+              {categories.map((item, index) => (
                 <tr
                   key={item._id}
                   className={`${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}

@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   companyInfo: { fontSize: 14, textAlign: "right" },
   customerInfo: { marginTop: 10, marginBottom: 10 },
   customerText: { marginBottom: 3 },
+  // -------- table start --------------
   table: {
     display: "flex",
     flexDirection: "column",
@@ -45,14 +46,28 @@ const styles = StyleSheet.create({
     borderBottom: "1px solid #000",
     paddingVertical: 5,
   },
-  cellHeader: { flex: 1, fontWeight: "bold", fontSize: 12 },
-  cell: { flex: 1, fontSize: 10 },
+  cellHeader: {
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+  cell: {
+    fontSize: 10,
+  },
+  cellProduct: {
+    flex: 1, // Takes the remaining space
+    paddingLeft:"8px"
+  },
+  cellFixed: {
+    width: 64, // Fixed width for the other columns
+    textAlign: "center",
+  },
+  // -------- table end --------------
   totalSection: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
     marginTop: 10,
-    marginRight: 72,
+    marginRight: 8,
   },
   totalText: { fontSize: 14, fontWeight: "bold" },
   signatureSection: {
@@ -109,26 +124,30 @@ const InvoicePDF = ({
           </Text>
         </View>
 
-        {/* Table Header */}
+        {/* Table */}
         <View style={styles.table}>
+          {/* Table Header */}
           <View style={styles.row}>
-            <Text style={styles.cellHeader}>Product</Text>
-            <Text style={styles.cellHeader}>Price</Text>
-            <Text style={styles.cellHeader}>Quantity</Text>
-            <Text style={styles.cellHeader}>Total</Text>
+            <Text style={[styles.cellHeader, styles.cellProduct]}>Product</Text>
+            <Text style={[styles.cellHeader, styles.cellFixed]}>Price</Text>
+            <Text style={[styles.cellHeader, styles.cellFixed]}>Quantity</Text>
+            <Text style={[styles.cellHeader, styles.cellFixed]}>Total</Text>
           </View>
 
           {/* Product Rows */}
           {selectedProducts.map((product, index) => (
             <View key={index} style={styles.row}>
-              <Text style={styles.cell}>
+              <Text style={[styles.cell, styles.cellProduct]}>
                 {index + 1}. {product.productName}
               </Text>
-              <Text style={styles.cell}>{product.price.toFixed(2)}</Text>
-              <Text style={styles.cell}>{product.quantity}</Text>
-              <Text style={styles.cell}>
+              <Text style={[styles.cell, styles.cellFixed]}>
+                {product.price.toFixed(2)}
+              </Text>
+              <Text style={[styles.cell, styles.cellFixed]}>
+                {product.quantity}
+              </Text>
+              <Text style={[styles.cell, styles.cellFixed]}>
                 {(product.price * product.quantity).toFixed(2)}
-                {" /="}
               </Text>
             </View>
           ))}
@@ -137,7 +156,8 @@ const InvoicePDF = ({
         {/* Total Price */}
         <View style={styles.totalSection}>
           <Text style={styles.totalText}>
-            Total Price: {totalPrice.toFixed(2)}{" /="}
+            Total Price: {totalPrice.toFixed(2)}
+            {" /="}
           </Text>
         </View>
 

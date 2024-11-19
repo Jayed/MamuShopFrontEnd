@@ -29,19 +29,19 @@ const ManageSubcategory = () => {
     );
   }
   // Sort subCategories by category name first, then by subcategory name
-  const sortedSubCategories = [...subcategories].sort((a, b) => {
-    const categoryComparison = a.categoryName
-      .trim()
-      .toLowerCase()
-      .localeCompare(b.categoryName.trim().toLowerCase());
-    if (categoryComparison !== 0) {
-      return categoryComparison; // If categories are different, sort by category
-    }
-    return a.name
-      .trim()
-      .toLowerCase()
-      .localeCompare(b.name.trim().toLowerCase()); // If categories are the same, sort by subcategory name
-  });
+  // const sortedSubCategories = [...subcategories].sort((a, b) => {
+  //   const categoryComparison = a.categoryName
+  //     .trim()
+  //     .toLowerCase()
+  //     .localeCompare(b.categoryName.trim().toLowerCase());
+  //   if (categoryComparison !== 0) {
+  //     return categoryComparison; // If categories are different, sort by category
+  //   }
+  //   return a.name
+  //     .trim()
+  //     .toLowerCase()
+  //     .localeCompare(b.name.trim().toLowerCase()); // If categories are the same, sort by subcategory name
+  // });
   // Handle Delete
   const handleDeleteItem = (item) => {
     Swal.fire({
@@ -226,7 +226,7 @@ const ManageSubcategory = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedSubCategories.map((item, index) => (
+              {subcategories.map((item, index) => (
                 <tr
                   key={item._id}
                   className={`${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}

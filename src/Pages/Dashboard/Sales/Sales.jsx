@@ -24,8 +24,15 @@ const Sales = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Helper functions
-  console.log("selectedCustomer:", selectedCustomer);
-  console.log("selectedProducts:", selectedProducts);
+  // Log selectedCustomer only when it changes
+  useEffect(() => {
+    console.log("selectedCustomer:", selectedCustomer);
+  }, [selectedCustomer]);
+
+  // Log selectedProducts only when they change
+  useEffect(() => {
+    console.log("selectedProducts:", selectedProducts);
+  }, [selectedProducts]);
 
   // Filtered customers
   useEffect(() => {
@@ -60,6 +67,8 @@ const Sales = () => {
     const results = products.filter((product) =>
       searchWords.every(
         (word) =>
+          product.brand?.toLowerCase().includes(word) ||
+          product.category?.toLowerCase().includes(word) ||
           product.subCategory?.toLowerCase().includes(word) ||
           product.subsubCategory?.toLowerCase().includes(word)
       )
@@ -211,7 +220,7 @@ const Sales = () => {
           {filteredCustomers.map((customer) => (
             <li
               key={customer._id}
-              className="flex items-center bg-gray-100 p-2 rounded-md"
+              className="flex items-center bg-gray-100 px-2 py-1 rounded-md"
             >
               <button
                 className="btn btn-sm btn-primary mr-4"
@@ -223,7 +232,7 @@ const Sales = () => {
                 Add
               </button>
               <span>
-                {customer.name} - {customer.mobile} - ${customer.address}
+                {customer.name} - {customer.mobile} - {customer.address}
               </span>
             </li>
           ))}
@@ -292,18 +301,29 @@ const Sales = () => {
             {filteredProducts.map((product) => (
               <li
                 key={product._id}
-                className="flex justify-between items-center bg-gray-100 p-2 rounded-md"
+                className="flex justify-between items-center bg-gray-100 p-4 rounded-md shadow hover:bg-gray-200 cursor-pointer transition-all"
+                onClick={() => addProductToSale(product)} // Attach click event to the list item
               >
-                <span>
-                  {product.subCategory} - {product.subsubCategory} - $
-                  {product.productPrice}
-                </span>
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => addProductToSale(product)}
-                >
-                  Add
-                </button>
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center">
+                    <p className="font-semibold text-gray-500">
+                      {product.brand}{" "}
+                      <span className="text-sm text-gray-700">
+                        ({product.subCategory})
+                      </span>
+                    </p>
+
+                    <p className="text-sm bg-gray-200 px-1 rounded-lg">
+                      {product.productPrice} Tk
+                    </p>
+                  </div>
+                  <p className=" text-blue-600">
+                    {product.category} <br />
+                    <span className="text-green-600 font-semibold">
+                      {product.subsubCategory}
+                    </span>
+                  </p>
+                </div>
               </li>
             ))}
           </ul>
@@ -318,38 +338,55 @@ const Sales = () => {
               No products selected
             </p>
           ) : (
-            <table className="table-auto w-full">
+            <table className="table-auto w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2">#</th>
-                  <th className="border px-4 py-2">Product</th>
-                  <th className="border px-4 py-2">Price</th>
-                  <th className="border px-4 py-2">inStock</th>
-                  <th className="border px-4 py-2">Selling</th>
-                  <th className="border px-4 py-2">Total</th>
-                  <th className="border px-4 py-2">Action</th>
+                  <th className="border px-4 py-2 w-12">#</th>
+                  <th className="border px-4 py-2 w-1/3">Product</th>
+                  <th className="border px-4 py-2 w-24">Price</th>
+                  <th className="border px-4 py-2 w-16">In Stock</th>
+                  <th className="border px-4 py-2 w-20">Selling</th>
+                  <th className="border px-4 py-2 w-24">Total</th>
+                  <th className="border px-4 py-2 w-16">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {selectedProducts.map((product, index) => (
                   <tr key={index}>
-                    <td className="border px-4 py-2">{index + 1}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {index + 1}
+                    </td>
                     <td className="border px-4 py-2">
-                      {product.subCategory} - {product.subsubCategory}
+                      <div className="flex flex-col">
+                        <p className="font-semibold text-gray-500">
+                          {product.brand}{" "}
+                          <span className="text-sm text-gray-700">
+                            ({product.subCategory})
+                          </span>
+                        </p>
+                        <p className="text-blue-600">
+                          {product.category} <br />
+                          <span className="text-green-600 font-semibold">
+                            {product.subsubCategory}
+                          </span>
+                        </p>
+                      </div>
                     </td>
                     <td className="border px-4 py-2">
                       <input
                         type="number"
                         min="100"
                         value={product.productPrice}
-                        onFocus={(e) => e.target.select()} //onclick select all text
+                        onFocus={(e) => e.target.select()} // Select all text on focus
                         onChange={(e) =>
                           handlePriceChange(index, e.target.value)
                         }
-                        className="input input-sm input-bordered w-24"
+                        className="input input-sm input-bordered w-20 text-right"
                       />
                     </td>
-                    <td className="border px-4 py-2">{product.inStock}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {product.inStock}
+                    </td>
                     <td className="border px-4 py-2">
                       <input
                         type="number"
@@ -363,13 +400,13 @@ const Sales = () => {
                             parseInt(e.target.value)
                           )
                         }
-                        className="input input-sm input-bordered w-16"
+                        className="input input-sm input-bordered w-16 text-right"
                       />
                     </td>
-                    <td className="border px-4 py-2">
+                    <td className="border px-4 py-2 text-right">
                       ${product.productPrice * product.sellingAmount}
                     </td>
-                    <td className="border px-4 py-2">
+                    <td className="border px-4 py-2 text-center">
                       <button
                         onClick={() => handleDeleteSelectedProduct(product)}
                         className="btn btn-ghost text-2xl text-red-500"
