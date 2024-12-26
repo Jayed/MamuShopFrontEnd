@@ -24,6 +24,7 @@ import Sales from "../Pages/Dashboard/Sales/Sales";
 import SalesList from "../Pages/Dashboard/Sales/SalesList";
 import Customers from "../Pages/Dashboard/Customers/Customers";
 import UpdateProducts from "../Pages/Dashboard/Products/UpdateProducts";
+import ManageBrand from "../Pages/Dashboard/Brand/ManageBrand";
 
 export const router = createBrowserRouter([
   {
@@ -86,7 +87,7 @@ export const router = createBrowserRouter([
         element: <UpdateProducts />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `http://localhost:5005/products/${params.id}`
+            `https://store-management-app-server.vercel.app/products/${params.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch the Products");
@@ -117,7 +118,7 @@ export const router = createBrowserRouter([
         // element: <UpdateCategory />,
         // loader: async ({ params }) => {
         //   const response = await fetch(
-        //     `http://localhost:5005/category/${params.id}`
+        //     `https://store-management-app-server.vercel.app/category/${params.id}`
         //   );
         //   if (!response.ok) {
         //     throw new Error("Failed to fetch category");
@@ -134,7 +135,7 @@ export const router = createBrowserRouter([
         element: <UpdateSubcategory />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `http://localhost:5005/subcategory/${params.id}`
+            `https://store-management-app-server.vercel.app/subcategory/${params.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch category");
@@ -151,13 +152,17 @@ export const router = createBrowserRouter([
         element: <UpdateSubsubCategory />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `http://localhost:5005/subsubcategory/${params.id}`
+            `https://store-management-app-server.vercel.app/subsubcategory/${params.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch category");
           }
           return response.json(); // Return the JSON data to the loader
         },
+      },
+      {
+        path: "manage-brand",
+        element: <ManageBrand></ManageBrand>,
       },
       {
         path: "sales",

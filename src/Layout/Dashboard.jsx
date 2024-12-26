@@ -49,6 +49,11 @@ const Dashboard = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/dashboard/manage-brand" onClick={() => setIsSidebarOpen(false)}>
+              <FaList className="mr-2" /> Manage Brand
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/dashboard/add-products" onClick={() => setIsSidebarOpen(false)}>
               <FaPlusSquare className="mr-2" /> Add Products
             </NavLink>
