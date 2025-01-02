@@ -34,52 +34,82 @@ const Dashboard = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/manage-category" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/manage-category"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Manage Category
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/manage-subcategory" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/manage-subcategory"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Manage Subcategory
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/manage-subsubcategory" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/manage-subsubcategory"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Manage Sub-subcategory
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/manage-brand" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/manage-brand"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Manage Brand
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/add-products" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/add-products"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaPlusSquare className="mr-2" /> Add Products
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/manage-products" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/manage-products"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Manage Products
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/sales" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/sales"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Create Sales
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/sales-list" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/sales-list"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaList className="mr-2" /> Sales List
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/customers" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/customers"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaUsers className="mr-2" /> Customers
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/users" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/users"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaUsers className="mr-2" /> All Users
             </NavLink>
           </li>
