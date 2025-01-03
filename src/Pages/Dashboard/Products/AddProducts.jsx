@@ -32,9 +32,9 @@ const AddProducts = () => {
   const selectedSubCategory = watch("subCategory");
 
   // States for cost and price calculation
-  const [costRMB, setCostRMB] = useState(32);
-  const [rmbRate, setRmbRate] = useState(17.9);
-  const [transportCost, setTransportCost] = useState(50);
+  const [costRMB, setCostRMB] = useState();
+  const [rmbRate, setRmbRate] = useState();
+  const [transportCost, setTransportCost] = useState();
   const [productCost, setProductCost] = useState("");
   const [productPrice, setProductPrice] = useState("");
 

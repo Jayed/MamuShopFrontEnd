@@ -195,20 +195,20 @@ const UpdateProducts = () => {
                 {...register("inStock")}
               />
             </div>
-            {/* Product Quantity */}
+            {/* Product Quantity [Newly Added] */}
             <div className="form-control w-full">
               <div className="label">
-                <span className="label-text">Product Quantity*</span>
+                <span className="label-text">Newly Adding Quantity*</span>
               </div>
               <input
                 type="number"
-                defaultValue={250}
+                // defaultValue={250}
                 onFocus={(e) => e.target.select()}
                 {...register("productQuantity", {
                   required: "Product Quantity is required",
                 })}
                 className="textarea textarea-bordered"
-                placeholder="Product Quantity"
+                placeholder="Newly Adding Quantity"
               />
               {errors.productQuantity && (
                 <span className="text-red-500">
