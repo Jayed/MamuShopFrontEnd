@@ -22,7 +22,9 @@ const ManageProducts = () => {
 
   // Fetch products when the component mounts
   const fetchProducts = async () => {
-    const response = await fetch("http://localhost:5005/products");
+    const response = await fetch(
+      "https://store-management-app-server.vercel.app/products"
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
@@ -44,23 +46,8 @@ const ManageProducts = () => {
   // Handle Pagination Changes (without re-triggering products fetch)
   useEffect(() => {
     if (products.length > 0) {
-      const sortedProducts = [...products].sort((a, b) => {
-        // Sort by brand in descending order (Z to A)
-        if (a.brand !== b.brand) {
-          return b.brand.localeCompare(a.brand);
-        }
-        // Sort by subCategory in ascending order if brands are the same
-        if (a.subCategory !== b.subCategory) {
-          return a.subCategory.localeCompare(b.subCategory);
-        }
-        // Sort by subsubCategory in ascending order if brands and subCategory are the same
-        return a.subsubCategory.localeCompare(b.subsubCategory);
-      });
-
-      setPageCount(Math.ceil(sortedProducts.length / itemsPerPage));
-      setCurrentItems(
-        sortedProducts.slice(itemOffset, itemOffset + itemsPerPage)
-      );
+      setPageCount(Math.ceil(products.length / itemsPerPage));
+      setCurrentItems(products.slice(itemOffset, itemOffset + itemsPerPage));
     }
   }, [products, itemOffset]);
 
@@ -133,17 +120,18 @@ const ManageProducts = () => {
                 <th className="border-r border-gray-400">Update</th>
                 <th className="border-r border-gray-400">#</th>
                 <th className="border-r border-gray-400">Category</th>
-                <th className="border-r border-gray-400">SubCategory</th>
-                <th className="border-r border-gray-400">SubsubCategory</th>
+                <th className="border-r border-gray-400">Category2</th>
+                <th className="border-r border-gray-400">Category3</th>
                 <th className="border-r border-gray-400">Brand</th>
-                <th className="border-r border-gray-400">Product Code</th>
+                <th className="border-r border-gray-400">Pro. Code</th>
                 <th className="border-r border-gray-400">In Stock</th>
                 <th className="border-r border-gray-400">Stock Alert</th>
-                <th className="border-r border-gray-400">Cost at RMB</th>
-                <th className="border-r border-gray-400">RMB Rate</th>
-                <th className="border-r border-gray-400">Transport Cost</th>
-                <th className="border-r border-gray-400">Product Cost</th>
-                <th className="border-r border-gray-400">Product Price</th>
+                <th className="border-r border-gray-400">Cost(RMB)</th>
+                <th className="border-r border-gray-400">Rate(RMB)</th>
+                <th className="border-r border-gray-400">Cost(Trans.)</th>
+                <th className="border-r border-gray-400">InStock Value</th>
+                <th className="border-r border-gray-400">Pro. Cost</th>
+                <th className="border-r border-gray-400">Pro. Price</th>
                 <th className="border-r border-gray-400">Date</th>
                 <th className="border-r border-gray-400">Action</th>
               </tr>
@@ -177,6 +165,9 @@ const ManageProducts = () => {
                   <td className="border border-gray-300">{item.rmbRate}</td>
                   <td className="border border-gray-300">
                     {item.transportCost}
+                  </td>
+                  <td className="border border-gray-300">
+                    {item.inStockValue.toFixed(2)}
                   </td>
                   <td className="border border-gray-300">{item.productCost}</td>
                   <td className="border border-gray-300">

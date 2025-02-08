@@ -23,16 +23,60 @@ const Dashboard = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-blue-50 pt-8 pl-4 z-30 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 w-64 bg-cyan-900 text-white pt-8 pl-4 z-30 transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:static md:translate-x-0`}
       >
         <ul className="menu space-y-2 w-60">
           <li>
-            <NavLink to="/dashboard/admin-home" onClick={() => setIsSidebarOpen(false)}>
+            <NavLink
+              to="/dashboard/admin-home"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <FaHome className="mr-2" /> Admin Home
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/dashboard/sales"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaList className="mr-2" /> Create Sales
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/sales-list"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaList className="mr-2" /> Sales List
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/customers"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaUsers className="mr-2" /> Customers
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/add-products"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaPlusSquare className="mr-2" /> Add Products
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/manage-products"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <FaList className="mr-2" /> Manage Products
+            </NavLink>
+          </li>
+
           <li>
             <NavLink
               to="/dashboard/manage-category"
@@ -67,46 +111,6 @@ const Dashboard = () => {
           </li>
           <li>
             <NavLink
-              to="/dashboard/add-products"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <FaPlusSquare className="mr-2" /> Add Products
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/manage-products"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <FaList className="mr-2" /> Manage Products
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/sales"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <FaList className="mr-2" /> Create Sales
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/sales-list"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <FaList className="mr-2" /> Sales List
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/customers"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <FaUsers className="mr-2" /> Customers
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
               to="/dashboard/users"
               onClick={() => setIsSidebarOpen(false)}
             >
@@ -125,7 +129,7 @@ const Dashboard = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 transition-all duration-300">
+      <div className="flex-1 bg-gray-100   transition-all duration-300">
         <Outlet />
       </div>
     </div>

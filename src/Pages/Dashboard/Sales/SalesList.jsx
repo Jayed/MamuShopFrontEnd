@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+
 import { FaEye } from "react-icons/fa";
 import InvoicePDF from "../../../Utils/InvoicePDF";
 import { pdf } from "@react-pdf/renderer";
@@ -10,6 +10,7 @@ import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import { useForm } from "react-hook-form";
 import Loader from "../../../Utils/Loader";
 import Pagination from "../../../Components/Pagination/Pagination";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const SalesList = () => {
   const [salesData, setSalesData] = useState([]);
@@ -75,7 +76,7 @@ const SalesList = () => {
   // handleViewPDF
   const handleViewPDF = async (id) => {
     try {
-      const response = await axiosPublic.get(`/sales-list/${id}`);
+      const response = await useAxiosPublic.get(`/sales-list/${id}`);
       const { customer, products, totalAmount, invoiceNumber, date } =
         response.data[0];
       await handlePreviewPDF(
@@ -199,7 +200,8 @@ const SalesList = () => {
                 <th className="border px-4 py-2">Invoice</th>
                 <th className="border px-4 py-2">Date</th>
                 <th className="border px-4 py-2">Customer</th>
-                <th className="border px-4 py-2">Total Amount</th>
+                <th className="border px-4 py-2">Sells</th>
+                <th className="border px-4 py-2">Profit</th>
                 <th className="border px-4 py-2">Action</th>
               </tr>
             </thead>
@@ -216,6 +218,10 @@ const SalesList = () => {
                   <td className="border px-4 py-2">
                     <span className="font-extrabold text-xs mr-1">৳</span>
                     {sale.totalAmount}
+                  </td>
+                  <td className="border px-4 py-2">
+                    <span className="font-extrabold text-xs mr-1">৳</span>
+                    {(sale.totalProfit ?? 0).toFixed(2)}
                   </td>
                   {/* Action buttons  */}
                   <td className="flex justify-center border px-4 py-2">
