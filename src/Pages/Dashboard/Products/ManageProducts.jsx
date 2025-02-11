@@ -22,9 +22,7 @@ const ManageProducts = () => {
 
   // Fetch products when the component mounts
   const fetchProducts = async () => {
-    const response = await fetch(
-      "https://store-management-app-server.vercel.app/products"
-    );
+    const response = await fetch("http://localhost:5005/products");
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }

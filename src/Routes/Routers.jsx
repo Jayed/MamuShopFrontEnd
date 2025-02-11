@@ -91,7 +91,7 @@ export const router = createBrowserRouter([
         element: <UpdateProducts />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `https://store-management-app-server.vercel.app/products/${params.id}`
+            `http://localhost:5005/products/${params.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch the Products");
@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
         // element: <UpdateCategory />,
         // loader: async ({ params }) => {
         //   const response = await fetch(
-        //     `https://store-management-app-server.vercel.app/category/${params.id}`
+        //     `http://localhost:5005/category/${params.id}`
         //   );
         //   if (!response.ok) {
         //     throw new Error("Failed to fetch category");
@@ -139,7 +139,7 @@ export const router = createBrowserRouter([
         element: <UpdateSubcategory />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `https://store-management-app-server.vercel.app/subcategory/${params.id}`
+            `http://localhost:5005/subcategory/${params.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch category");
@@ -156,7 +156,7 @@ export const router = createBrowserRouter([
         element: <UpdateSubsubCategory />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `https://store-management-app-server.vercel.app/subsubcategory/${params.id}`
+            `http://localhost:5005/subsubcategory/${params.id}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch category");

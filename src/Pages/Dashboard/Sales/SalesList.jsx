@@ -10,7 +10,8 @@ import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import { useForm } from "react-hook-form";
 import Loader from "../../../Utils/Loader";
 import Pagination from "../../../Components/Pagination/Pagination";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+
 
 const SalesList = () => {
   const [salesData, setSalesData] = useState([]);
@@ -76,7 +77,7 @@ const SalesList = () => {
   // handleViewPDF
   const handleViewPDF = async (id) => {
     try {
-      const response = await useAxiosPublic.get(`/sales-list/${id}`);
+      const response = await axiosPublic.get(`/sales-list/${id}`);
       const { customer, products, totalAmount, invoiceNumber, date } =
         response.data[0];
       await handlePreviewPDF(

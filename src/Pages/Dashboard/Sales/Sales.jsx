@@ -7,8 +7,8 @@ import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import useCustomers from "../../../Hooks/useCustomers";
 import { useNavigate } from "react-router-dom";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { FaSearchPlus, FaTimesCircle } from "react-icons/fa"; // Import out-of-stock icon
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const Sales = () => {
   const navigate = useNavigate();
@@ -168,7 +168,7 @@ const Sales = () => {
     setTotalProfit(newTotalProfit);
   };
 
-  // Submit submit (selected customer and products)
+  // Submit (selected customer and products)
   const handleSubmitSale = async () => {
     // Show confirmation popup before submitting
     const result = await Swal.fire({
