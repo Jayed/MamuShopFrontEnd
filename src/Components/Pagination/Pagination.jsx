@@ -4,8 +4,8 @@ import ReactPaginate from "react-paginate";
 const Pagination = ({ pageCount, onPageChange }) => {
   return (
     <ReactPaginate
-      previousLabel="&lt; Previous"
-      nextLabel="Next &gt;"
+      previousLabel="&lt;"
+      nextLabel=" &gt;"
       pageCount={pageCount}
       onPageChange={onPageChange}
       containerClassName="flex items-center mt-6 mb-8 space-x-4 bg-base-200 shadow-sm rounded-lg p-2"

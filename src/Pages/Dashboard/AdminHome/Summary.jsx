@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
 import { Package, DollarSign, Users, FileText } from "lucide-react";
 import LoaderSmall from "../../../Utils/LoaderSmall";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const Summary = () => {
   const [totalInStock, setTotalInStock] = useState(0);
@@ -89,7 +89,7 @@ const Summary = () => {
             <p className="text-3xl font-bold text-gray-800">{totalCustomers}</p>
           )}
           <Link
-            to="/dashboard/manage-products"
+            to="/dashboard/customers"
             className="text-blue-500 text-sm mt-2 inline-block"
           >
             View Details →
@@ -107,7 +107,7 @@ const Summary = () => {
             <p className="text-3xl font-bold text-gray-800">{totalInvoices}</p>
           )}
           <Link
-            to="/dashboard/manage-products"
+            to="/dashboard/sales-list"
             className="text-blue-500 text-sm mt-2 inline-block"
           >
             View Details →

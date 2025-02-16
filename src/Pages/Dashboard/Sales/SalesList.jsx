@@ -12,7 +12,6 @@ import Loader from "../../../Utils/Loader";
 import Pagination from "../../../Components/Pagination/Pagination";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
-
 const SalesList = () => {
   const [salesData, setSalesData] = useState([]);
   const [specSalesProduct, setSpecSalesProduct] = useState([]);
@@ -22,24 +21,24 @@ const SalesList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pdfBlob, setPdfBlob] = useState(null);
   const [iframeSrc, setIframeSrc] = useState(null); // New state for iframe src
+  //For searching
+  const [filteredSales, setFilteredSales] = useState([]); // New filtered data state
+  const [searchQuery, setSearchQuery] = useState(""); // Search state for customer name
+  const [searchDate, setSearchDate] = useState(""); // Search state for date
+  // Filtered sales list
+  const [filteredSalesList, setFilteredSalesList] = useState("");
   // Pagination state
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   // Fetch sales records data
   const fetchSalesData = async () => {
     try {
       setIsLoading(true);
       const response = await axiosPublic.get("/sales-list");
-
-      // Sort the sales data by date in descending order (latest date first)
-      const sortedSalesData = response.data.sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
-      });
-
-      setSalesData(sortedSalesData);
+      setSalesData(response.data);
       setIsLoading(false);
       setPageCount(Math.ceil(response?.data?.length / itemsPerPage));
       setCurrentItems(response?.data?.slice(0, itemsPerPage));
@@ -48,12 +47,34 @@ const SalesList = () => {
       setIsLoading(false);
     }
   };
+
   // Handle pagination click
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % salesData?.length;
     setItemOffset(newOffset);
     setCurrentItems(salesData?.slice(newOffset, newOffset + itemsPerPage));
   };
+
+  // Filtered sales list based on searchTerm change
+  useEffect(() => {
+    let filtered = salesData;
+
+    if (searchQuery.trim()) {
+      filtered = filtered.filter((sale) =>
+        sale.customer?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (searchDate) {
+      filtered = filtered.filter(
+        (sale) => new Date(sale.date).toISOString().split("T")[0] === searchDate
+      );
+    }
+
+    setFilteredSalesList(filtered);
+    // setPageCount(Math.ceil(filtered.length / itemsPerPage));
+    // setCurrentItems(filtered.slice(0, itemsPerPage));
+  }, [searchQuery, searchDate, salesData]);
 
   useEffect(() => {
     fetchSalesData();
@@ -100,14 +121,6 @@ const SalesList = () => {
     invoiceNumber,
     date
   ) => {
-    // console.log(
-    //   "Selected customer, Products, Total Price and others for PDF:",
-    //   customer,
-    //   selectedProducts,
-    //   totalPrice,
-    //   invoiceNumber,
-    //   date
-    // );
     const blob = await pdf(
       <InvoicePDF
         selectedCustomer={customer}
@@ -178,16 +191,59 @@ const SalesList = () => {
     });
   };
 
+  // Search function to filter data
+  useEffect(() => {
+    let filtered = salesData;
+
+    if (searchQuery) {
+      filtered = filtered.filter((sale) =>
+        sale.customer?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (searchDate) {
+      filtered = filtered.filter(
+        (sale) => new Date(sale.date).toISOString().split("T")[0] === searchDate
+      );
+    }
+
+    setFilteredSales(filtered);
+    setPageCount(Math.ceil(filtered.length / itemsPerPage));
+    setCurrentItems(filtered.slice(0, itemsPerPage));
+  }, [searchQuery, searchDate, salesData]);
+
   return (
     <>
       <SectionTitle
         subHeading="Provide all information about the new product"
         heading="ADDING NEW PRODUCT"
       />
-      <div className="m-8 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+      <div className="m-8 p-6 bg-white rounded-lg shadow-lg border border-gray-400">
         <h2 className="text-2xl font-semibold text-blue-600 mb-4">
-          Sales List
+          {/* Sales List ({currentItems.length}/{salesData.length}) */}
+          Sales List (
+          {filteredSalesList.length > 0
+            ? filteredSalesList.length
+            : salesData.length}
+          )
         </h2>
+
+        {/* Search Fields */}
+        <div className="flex gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Search by customer name..."
+            className="border p-2 rounded w-1/2 shadow-lg pl-6"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <input
+            type="date"
+            className="border p-2 rounded w-1/2 shadow-lg pl-6"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+          />
+        </div>
 
         {isLoading ? (
           // Loader
@@ -195,7 +251,7 @@ const SalesList = () => {
         ) : error ? (
           <p className="text-red-500 font-bold text-3xl ">Error: {error}</p>
         ) : (
-          <table className="table-auto w-full">
+          <table className="table-auto w-full bg-white shadow-lg">
             <thead>
               <tr>
                 <th className="border px-4 py-2">Invoice</th>
@@ -207,43 +263,52 @@ const SalesList = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((sale) => (
+              {( (searchQuery && searchDate)
+                ? filteredSalesList
+                : currentItems
+              ).map((sale) => (
                 <tr key={sale._id}>
                   <td className="border px-4 py-2">{sale.invoiceNumber}</td>
                   <td className="border px-4 py-2">
-                    {new Date(sale.date).toLocaleDateString("en-CA")}
+                    {new Date(sale.date).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
                   </td>
                   <td className="border px-4 py-2">
                     {sale.customer?.name ? sale.customer.name : "NF"}
                   </td>
                   <td className="border px-4 py-2">
                     <span className="font-extrabold text-xs mr-1">৳</span>
-                    {sale.totalAmount}
+                    {(sale.totalAmount ?? 0).toFixed(2)}
                   </td>
                   <td className="border px-4 py-2">
                     <span className="font-extrabold text-xs mr-1">৳</span>
                     {(sale.totalProfit ?? 0).toFixed(2)}
                   </td>
                   {/* Action buttons  */}
-                  <td className="flex justify-center border px-4 py-2">
-                    <button
-                      onClick={() => handleViewPDF(sale._id)}
-                      className="btn btn-ghost text-2xl text-green-500"
-                    >
-                      <FaEye />
-                    </button>
-                    {/* <button
+                  <td className="border px-4 py-2">
+                    <div className="flex justify-center ">
+                      <button
+                        onClick={() => handleViewPDF(sale._id)}
+                        className="btn btn-ghost text-2xl text-green-500"
+                      >
+                        <FaEye />
+                      </button>
+                      {/* <button
                     //onClick={() => handleEditSale(sale._id)}
                     className="btn btn-ghost text-xl text-yellow-500"
                   >
                     <FaEdit />
                   </button> */}
-                    <button
-                      onClick={() => handleDeleteSale(sale._id)}
-                      className="btn btn-ghost text-2xl text-red-500"
-                    >
-                      <MdDelete />
-                    </button>
+                      <button
+                        onClick={() => handleDeleteSale(sale._id)}
+                        className="btn btn-ghost text-2xl text-red-500"
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

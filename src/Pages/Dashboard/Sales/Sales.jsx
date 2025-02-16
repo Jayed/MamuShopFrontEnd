@@ -9,6 +9,7 @@ import useCustomers from "../../../Hooks/useCustomers";
 import { useNavigate } from "react-router-dom";
 import { FaSearchPlus, FaTimesCircle } from "react-icons/fa"; // Import out-of-stock icon
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import { DollarSign } from "lucide-react";
 
 const Sales = () => {
   const navigate = useNavigate();
@@ -21,6 +22,12 @@ const Sales = () => {
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
+  // Adding date
+  const [saleDate, setSaleDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
   const axiosPublic = useAxiosPublic();
   // Fetch customer
   const [customers] = useCustomers();
@@ -31,6 +38,11 @@ const Sales = () => {
   useEffect(() => {
     console.log("selectedCustomer:", selectedCustomer);
   }, [selectedCustomer]);
+
+  // isConfirmed
+  useEffect(() => {
+    console.log("isConfirmed:", isConfirmed);
+  }, [isConfirmed]);
 
   // Log selectedProducts only when they change
   useEffect(() => {
@@ -189,7 +201,9 @@ const Sales = () => {
         const response = await axiosPublic.post("/sale", {
           customer: selectedCustomer,
           products: selectedProducts,
+          date: saleDate,
         });
+        console.log(saleDate);
         setSearchTermCx("");
         setSearchTerm("");
         if (response.data) {
@@ -251,17 +265,23 @@ const Sales = () => {
       />
       {/* Search Customer and select */}
       <div className="bg-white p-6 rounded-lg shadow-md border mb-6 mt-6">
-        <h2 className="text-2xl font-semibold mb-4 text-blue-500">
-          Search Customer
-        </h2>
-        {/* Search input field  */}
-        <input
-          type="text"
-          placeholder="Search customer by name, address or mobile number"
-          value={searchTermCx}
-          onChange={(e) => setSearchTermCx(e.target.value)}
-          className="input input-bordered w-full mb-4"
-        />
+        <div className="flex gap-4">
+          <div className="text-2xl font-semibold mb-4 text-blue-500 flex justify-left items-center gap-1">
+            <p className="text-xl">
+              <FaSearchPlus />
+            </p>
+            <p className="text-xl">Customer<span className="pl-2 font-bold text-2xl">:-</span></p>
+          </div>
+          {/* Search input field  */}
+          <input
+            type="text"
+            placeholder="Search customer by name, address or mobile number"
+            value={searchTermCx}
+            onChange={(e) => setSearchTermCx(e.target.value)}
+            className="input input-bordered w-full mb-4"
+          />
+        </div>
+        {/* showing un order list of customer */}
         <ul className="space-y-2">
           {filteredCustomers.map((customer) => (
             <li
@@ -283,15 +303,15 @@ const Sales = () => {
             </li>
           ))}
         </ul>
-        {/* Selected Customer */}
-        <div className="w-full p-4 bg-white rounded-lg overflow-auto">
+        {/* Showing Selected Customer */}
+        <div className="w-full bg-white rounded-lg overflow-auto">
           {selectedCustomer.length === 0 ? (
             <p className="text-red-500 italic text-center">
               No Customer is selected
             </p>
           ) : (
-            <div className=" py-2 rounded-lg">
-              <h3 className="text-lg font-semibold mb-4 text-green-500">
+            <div className="rounded-lg">
+              <h3 className="text-lg font-semibold mb-1 text-green-500">
                 Customer Details
               </h3>
               <table className="min-w-full border rounded-lg">
@@ -386,7 +406,7 @@ const Sales = () => {
           </ul>
         </div>
         {/* Selected products section  */}
-        <div className="md:w-3/4 bg-white p-6 rounded-lg shadow-md border">
+        <div className="md:w-full bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-4 text-green-500">
             Selected Products
           </h2>
@@ -395,7 +415,7 @@ const Sales = () => {
               No products selected
             </p>
           ) : (
-            <table className="table-auto w-full border-collapse">
+            <table className="table-auto w-3/4 bg-white border border-gray-200 shadow-lg rounded-lg border-collapse">
               <thead>
                 <tr>
                   <th className="border px-4 py-2 w-12">#</th>
@@ -497,27 +517,69 @@ const Sales = () => {
               </tbody>
             </table>
           )}
-          {totalPrice > 0 && (
-            <h2 className="text-xl font-bold mt-4">
-              Total Price: ${totalPrice.toFixed(2)}
-            </h2>
-          )}
-          {/* {totalProfit > 0 && (
-            <h2 className="text-xl font-bold mt-4">
-              Total Profit: ${totalProfit}
-            </h2>
-          )} */}
-          {
-            <h2 className="text-xl font-bold mt-4">
-              Total Profit: ${totalProfit.toFixed(2)}
-            </h2>
-          }
+          {/* Adding Total sales and profit */}
+          {selectedProducts.length !== 0 && (
+            <div className="flex flex-wrap gap-6 justify-start mt-8">
+              {/* Total Sales Box */}
+              <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-lg px-6 py-2 w-60 md:w-72">
+                <div className="p-4 bg-blue-100 rounded-full">
+                  <DollarSign className="text-blue-600 w-8 h-8" />
+                </div>
+                <div className="ml-4">
+                  <h2 className="text-sm text-gray-500">Total Sales</h2>
+                  <p className="text-2xl font-bold text-gray-800">
+                    ৳{totalPrice.toFixed(2)}
+                  </p>
+                </div>
+              </div>
 
+              {/* Total Profit Box */}
+              <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-lg px-6 py-2 w-60 md:w-72">
+                <div className="p-4 bg-green-100 rounded-full">
+                  <DollarSign className="text-green-600 w-8 h-8" />
+                </div>
+                <div className="ml-4">
+                  <h2 className="text-sm text-gray-500">Total Profit</h2>
+                  <p className="text-2xl font-bold text-gray-800">
+                    ৳{totalProfit.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Add selling date */}
+          {selectedProducts.length !== 0 && selectedCustomer.length !== 0 && (
+            <div className="flex items-center justify-between p-4 my-4 bg-white border border-gray-200 shadow-lg rounded-lg w-1/2">
+              <div className="flex items-center gap-2 cursor-pointer text-2xl font-bold pl-4">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-primary scale-150 h-6 w-7"
+                  checked={isConfirmed}
+                  onChange={(e) => setIsConfirmed(e.target.checked)}
+                  required
+                />
+              </div>
+              <div className="form-control">
+                <input
+                  type="date"
+                  className="input input-bordered w-full text-sm font-medium"
+                  value={saleDate}
+                  onChange={(e) => setSaleDate(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Complete sales button  */}
           <button
-            className="btn btn-primary mt-4"
+            className="btn btn-primary mt-4 border border-gray-200 shadow-lg"
             onClick={handleSubmitSale}
             disabled={
-              selectedCustomer.length === 0 || selectedProducts.length === 0
+              selectedCustomer.length === 0 ||
+              selectedProducts.length === 0 ||
+              !isConfirmed
             }
           >
             Complete Sale

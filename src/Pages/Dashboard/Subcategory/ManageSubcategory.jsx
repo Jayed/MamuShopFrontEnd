@@ -7,6 +7,7 @@ import useCategories from "../../../Hooks/useCategories";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const ManageSubcategory = () => {
   const axiosPublic = useAxiosPublic();
@@ -17,6 +18,10 @@ const ManageSubcategory = () => {
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
 
   const [categories] = useCategories();
+
+  // For search
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
 
   if (isPending) {
     return (
@@ -132,6 +137,26 @@ const ManageSubcategory = () => {
     }
   };
 
+  // Filtered Items based on searchTerm change
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      // Set filteredItems to an empty array if searchTerm is empty
+      setFilteredItems([]);
+      return;
+    }
+
+    const searchWords = searchTerm.toLowerCase().split(" ");
+    const results = subcategories.filter((item) =>
+      searchWords.every(
+        (word) =>
+          item.name?.toLowerCase().includes(word) ||
+          item.categoryName?.toLowerCase().includes(word)
+      )
+    );
+
+    setFilteredItems(results);
+  }, [searchTerm, subcategories]);
+
   return (
     <div>
       {/* Section Title */}
@@ -143,10 +168,17 @@ const ManageSubcategory = () => {
       </div>
 
       {/* Add Subcategory button with modal */}
-      <div className="flex justify-start items-center ml-16">
+      <div className="flex justify-normal gap-4 items-center mx-16 mt-4">
         <button onClick={openModal} className="btn btn-primary my-2">
           Add Subcategory
         </button>
+        <input
+          type="text"
+          placeholder="Search by category or subcategory"
+          className="input input-bordered w-1/3"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
         {/* Modal */}
         {isModalOpen && (
@@ -226,7 +258,7 @@ const ManageSubcategory = () => {
               </tr>
             </thead>
             <tbody>
-              {subcategories.map((item, index) => (
+              {(searchTerm ? filteredItems : subcategories).map((item, index) => (
                 <tr
                   key={item._id}
                   className={`${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}

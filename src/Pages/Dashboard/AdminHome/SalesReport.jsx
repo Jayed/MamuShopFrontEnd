@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoaderSmall from "../../../Utils/LoaderSmall";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { TbReportSearch } from "react-icons/tb";
+import { DollarSign } from "lucide-react";
 
 const SalesReport = () => {
   const axiosPublic = useAxiosPublic();
@@ -53,7 +54,7 @@ const SalesReport = () => {
           <TbReportSearch className="text-blue-500 text-2xl" />
           <span className="text-lg font-semibold">Sales Reports</span>
         </div>
-        <div className="flex flex-col md:flex-row md:items-end gap-4 mb-4">
+        <div className="flex flex-row gap-4 mb-4">
           <div className="flex-1">
             <label className="text-sm text-gray-600">From:</label>
             <input
@@ -75,7 +76,7 @@ const SalesReport = () => {
         </div>
         <button
           onClick={() => fetchSalesReport(fromDate, toDate)}
-          className="w-full md:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300 mb-4"
+          className="w-auto px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300 mb-4"
         >
           View Report
         </button>
@@ -87,18 +88,31 @@ const SalesReport = () => {
           </p>
         ) : (
           totalSales !== null && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div className="bg-white border border-gray-200 rounded-lg shadow p-4">
-                <p className="text-xl font-bold text-gray-800">
-                  Total Sales:{" "}
-                  <span className="text-blue-600">${totalSales}</span>
-                </p>
+            <div className="flex flex-wrap gap-6 justify-start mt-2">
+              {/* Total Sales Box */}
+              <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-lg px-6 py-2 w-60 md:w-72">
+                <div className="p-2 bg-blue-100 rounded-full">
+                  <DollarSign className="text-blue-600 w-8 h-8" />
+                </div>
+                <div className="ml-4">
+                  <h2 className="text-sm text-gray-500">Total Sales</h2>
+                  <p className="text-xl font-bold text-gray-800">
+                    ৳{totalSales}
+                  </p>
+                </div>
               </div>
-              <div className="bg-white border border-gray-200 rounded-lg shadow p-4">
-                <p className="text-xl font-bold text-gray-800">
-                  Total Profit:{" "}
-                  <span className="text-blue-600">${totalProfit}</span>
-                </p>
+
+              {/* Total Profit Box */}
+              <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-lg px-6 py-2 w-60 md:w-72">
+                <div className="p-2 bg-green-100 rounded-full">
+                  <DollarSign className="text-green-600 w-8 h-8" />
+                </div>
+                <div className="ml-4">
+                  <h2 className="text-sm text-gray-500">Total Profit</h2>
+                  <p className="text-xl font-bold text-gray-800">
+                    ৳{totalProfit}
+                  </p>
+                </div>
               </div>
             </div>
           )

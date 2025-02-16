@@ -25,6 +25,7 @@ const Customers = () => {
   useEffect(() => {
     fetchCustomers();
   }, []);
+  
   // Get all customers
   const fetchCustomers = async () => {
     const { data } = await axiosPublic.get("/customers");
@@ -196,6 +197,7 @@ const Customers = () => {
   };
   return (
     <div>
+      {/* SectionTitle  */}
       <SectionTitle
         subHeading="Create new customer or Edit an existing customer."
         heading="CREATE & EDIT CUSTOMER"
@@ -240,7 +242,7 @@ const Customers = () => {
       {/* Search Customer and Take action */}
       <div className="max-w-lg mx-auto p-4 bg-base-100 shadow-lg rounded-lg mb-6">
         <h2 className="text-2xl font-semibold mb-4 text-blue-500">
-          Search Customer
+          Search Customer ({(filteredCustomers.length) > 0 ? (filteredCustomers.length) : (customers.length)})
         </h2>
         {/* Search input field  */}
         <input

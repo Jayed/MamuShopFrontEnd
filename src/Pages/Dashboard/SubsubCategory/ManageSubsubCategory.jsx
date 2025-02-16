@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import { useEffect } from "react";
 
 const ManageSubsubCategory = () => {
   const [subcategories] = useSubcategory();
@@ -15,6 +16,9 @@ const ManageSubsubCategory = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subsubcategory, setSubsubcategory] = useState("");
   const [selectedSubcategoryName, setSelectedSubcategoryName] = useState("");
+  // For search
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
 
   if (isPending) {
     return (
@@ -26,21 +30,6 @@ const ManageSubsubCategory = () => {
       </div>
     );
   }
-
-  // Sort subsubcategories by subcategory name first, then by subsubcategory name
-  const sortedSubsubcategories = [...subsubcategories].sort((a, b) => {
-    const subcategoryComparison = a.subcategoryName
-      .trim()
-      .toLowerCase()
-      .localeCompare(b.subcategoryName.trim().toLowerCase());
-    if (subcategoryComparison !== 0) {
-      return subcategoryComparison; // Sort by subcategory name if they differ
-    }
-    return a.name
-      .trim()
-      .toLowerCase()
-      .localeCompare(b.name.trim().toLowerCase()); // Sort by subsubcategory name if subcategory names are the same
-  });
 
   // Handle Delete
   const handleDeleteItem = (item) => {
@@ -137,6 +126,25 @@ const ManageSubsubCategory = () => {
       });
     }
   };
+  // Filtered Items based on searchTerm change
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      // Set filteredItems to an empty array if searchTerm is empty
+      setFilteredItems([]);
+      return;
+    }
+
+    const searchWords = searchTerm.toLowerCase().split(" ");
+    const results = subsubcategories.filter((item) =>
+      searchWords.every(
+        (word) =>
+          item.name?.toLowerCase().includes(word) ||
+          item.subcategoryName?.toLowerCase().includes(word)
+      )
+    );
+
+    setFilteredItems(results);
+  }, [searchTerm, subsubcategories]);
 
   return (
     <div>
@@ -149,10 +157,17 @@ const ManageSubsubCategory = () => {
       </div>
 
       {/* Add Sub Subcategory button with modal */}
-      <div className="flex justify-start items-center ml-16">
+      <div className="flex justify-normal gap-4 items-center mx-16 mt-4">
         <button onClick={openModal} className="btn btn-primary my-2">
           Add Sub Subcategory
         </button>
+        <input
+          type="text"
+          placeholder="Search by subcategory or sub-subcategory"
+          className="input input-bordered w-1/3"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
         {/* Modal */}
         {isModalOpen && (
@@ -231,33 +246,37 @@ const ManageSubsubCategory = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedSubsubcategories.map((item, index) => (
-                <tr
-                  key={item._id}
-                  className={`${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}
-                >
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                  <td>{item.subcategoryName}</td>
-                  {/* Edit button  */}
-                  <td>
-                    <Link to={`/dashboard/update-subsubcategory/${item._id}`}>
-                      <button className="btn btn-ghost text-2xl text-orange-500">
-                        <FaEdit />
+              {(searchTerm ? filteredItems : subsubcategories).map(
+                (item, index) => (
+                  <tr
+                    key={item._id}
+                    className={`${
+                      index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"
+                    }`}
+                  >
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>{item.subcategoryName}</td>
+                    {/* Edit button  */}
+                    <td>
+                      <Link to={`/dashboard/update-subsubcategory/${item._id}`}>
+                        <button className="btn btn-ghost text-2xl text-orange-500">
+                          <FaEdit />
+                        </button>
+                      </Link>
+                    </td>
+                    {/* Delete button  */}
+                    <td>
+                      <button
+                        onClick={() => handleDeleteItem(item)}
+                        className="btn btn-ghost text-2xl text-red-500"
+                      >
+                        <MdDelete />
                       </button>
-                    </Link>
-                  </td>
-                  {/* Delete button  */}
-                  <td>
-                    <button
-                      onClick={() => handleDeleteItem(item)}
-                      className="btn btn-ghost text-2xl text-red-500"
-                    >
-                      <MdDelete />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
