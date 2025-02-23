@@ -253,7 +253,7 @@ const SalesList = () => {
         ) : (
           <table className="table-auto w-full bg-white shadow-lg">
             <thead>
-              <tr>
+              <tr className="bg-cyan-900 text-base text-white">
                 <th className="border px-4 py-2">Invoice</th>
                 <th className="border px-4 py-2">Date</th>
                 <th className="border px-4 py-2">Customer</th>
@@ -267,7 +267,7 @@ const SalesList = () => {
                 ? filteredSalesList
                 : currentItems
               ).map((sale) => (
-                <tr key={sale._id}>
+                <tr className="text-cyan-900" key={sale._id}>
                   <td className="border px-4 py-2">{sale.invoiceNumber}</td>
                   <td className="border px-4 py-2">
                     {new Date(sale.date).toLocaleDateString("en-GB", {

@@ -11,8 +11,6 @@ import { useEffect } from "react";
 
 const ManageSubcategory = () => {
   const axiosPublic = useAxiosPublic();
-  // Fetch categories using the custom hook
-  const [subcategories, refetch, isPending] = useSubcategory();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subcategory, setSubcategory] = useState("");
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
@@ -23,16 +21,19 @@ const ManageSubcategory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
 
-  if (isPending) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full space-y-2 mt-12">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500 border-solid"></div>
-        <p className="text-blue-500 text-lg font-semibold">
-          Loading sales data...
-        </p>
-      </div>
-    );
-  }
+  // Fetch categories using the custom hook
+  const [subcategories, refetch, isPending] = useSubcategory();
+  //Loader
+  // if (isPending) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center h-full space-y-2 mt-12">
+  //       <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500 border-solid"></div>
+  //       <p className="text-blue-500 text-lg font-semibold">
+  //         Loading sales data...
+  //       </p>
+  //     </div>
+  //   );
+  // }
   // Sort subCategories by category name first, then by subcategory name
   // const sortedSubCategories = [...subcategories].sort((a, b) => {
   //   const categoryComparison = a.categoryName
@@ -249,7 +250,7 @@ const ManageSubcategory = () => {
           <table className="table w-full">
             {/* Table Head */}
             <thead>
-              <tr className="font-bold text-xl bg-gray-300">
+              <tr className="text-base text-white bg-cyan-900">
                 <th>#</th>
                 <th>Subcategory</th>
                 <th>Category</th>
@@ -258,33 +259,37 @@ const ManageSubcategory = () => {
               </tr>
             </thead>
             <tbody>
-              {(searchTerm ? filteredItems : subcategories).map((item, index) => (
-                <tr
-                  key={item._id}
-                  className={`${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}
-                >
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                  <td>{item.categoryName}</td>
-                  {/* Edit button  */}
-                  <td>
-                    <Link to={`/dashboard/update-subcategory/${item._id}`}>
-                      <button className="btn btn-ghost text-2xl text-orange-500">
-                        <FaEdit />
+              {(searchTerm ? filteredItems : subcategories).map(
+                (item, index) => (
+                  <tr
+                    key={item._id}
+                    className={`text-cyan-950 ${
+                      index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"
+                    }`}
+                  >
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>{item.categoryName}</td>
+                    {/* Edit button  */}
+                    <td>
+                      <Link to={`/dashboard/update-subcategory/${item._id}`}>
+                        <button className="btn btn-ghost text-2xl text-orange-500">
+                          <FaEdit />
+                        </button>
+                      </Link>
+                    </td>
+                    {/* Delete button  */}
+                    <td>
+                      <button
+                        onClick={() => handleDeleteItem(item)}
+                        className="btn btn-ghost text-2xl text-red-500"
+                      >
+                        <MdDelete />
                       </button>
-                    </Link>
-                  </td>
-                  {/* Delete button  */}
-                  <td>
-                    <button
-                      onClick={() => handleDeleteItem(item)}
-                      className="btn btn-ghost text-2xl text-red-500"
-                    >
-                      <MdDelete />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>

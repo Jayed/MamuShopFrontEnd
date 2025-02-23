@@ -10,8 +10,7 @@ import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useEffect } from "react";
 
 const ManageSubsubCategory = () => {
-  const [subcategories] = useSubcategory();
-  const [subsubcategories, refetch, isPending] = useSubsubCategory();
+  // const [subcategories] = useSubcategory();
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subsubcategory, setSubsubcategory] = useState("");
@@ -20,16 +19,18 @@ const ManageSubsubCategory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
 
-  if (isPending) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full space-y-2 mt-12">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500 border-solid"></div>
-        <p className="text-blue-500 text-lg font-semibold">
-          Loading sales data...
-        </p>
-      </div>
-    );
-  }
+  const [subsubcategories] = useSubsubCategory();
+  //Loader
+  // if (isPending) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center h-full space-y-2 mt-12">
+  //       <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500 border-solid"></div>
+  //       <p className="text-blue-500 text-lg font-semibold">
+  //         Loading sales data...
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   // Handle Delete
   const handleDeleteItem = (item) => {
@@ -237,7 +238,7 @@ const ManageSubsubCategory = () => {
           <table className="table w-full">
             {/* Table Head */}
             <thead>
-              <tr className="font-bold text-xl bg-gray-300">
+              <tr className="text-base text-white bg-cyan-900">
                 <th>#</th>
                 <th>Sub Subcategory</th>
                 <th>Subcategory</th>
@@ -250,7 +251,7 @@ const ManageSubsubCategory = () => {
                 (item, index) => (
                   <tr
                     key={item._id}
-                    className={`${
+                    className={`text-cyan-950 ${
                       index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"
                     }`}
                   >

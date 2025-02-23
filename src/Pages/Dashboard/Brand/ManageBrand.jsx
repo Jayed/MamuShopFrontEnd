@@ -192,7 +192,7 @@ const ManageBrand = () => {
         <div className="overflow-x-auto">
           <table className="table w-full">
             <thead>
-              <tr className="font-bold text-xl bg-gray-300">
+              <tr className="text-base text-white bg-cyan-900">
                 <th>#</th>
                 <th>Brand</th>
                 <th>Edit</th>
@@ -203,7 +203,7 @@ const ManageBrand = () => {
               {brands.map((item, index) => (
                 <tr
                   key={item._id}
-                  className={`${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}
+                  className={`text-cyan-950 ${index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"}`}
                 >
                   <td>{index + 1}</td>
                   <td>{item.name}</td>

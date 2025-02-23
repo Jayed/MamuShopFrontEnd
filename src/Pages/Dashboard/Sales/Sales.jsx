@@ -265,6 +265,7 @@ const Sales = () => {
       />
       {/* Search Customer and select */}
       <div className="bg-white p-6 rounded-lg shadow-md border mb-6 mt-6">
+        {/* search bar  */}
         <div className="flex gap-4">
           <div className="text-2xl font-semibold mb-4 text-blue-500 flex justify-left items-center gap-1">
             <p className="text-xl">
@@ -282,7 +283,7 @@ const Sales = () => {
           />
         </div>
         {/* showing un order list of customer */}
-        <ul className="space-y-2">
+        <ul className="space-y-2 text-cyan-900">
           {filteredCustomers.map((customer) => (
             <li
               key={customer._id}
@@ -315,23 +316,23 @@ const Sales = () => {
                 Customer Details
               </h3>
               <table className="min-w-full border rounded-lg">
-                <tbody>
+                <tbody className="text-cyan-900">
                   <tr className="hover:bg-gray-100 transition border">
-                    <td className=" text-gray-800 font-medium px-4 py-2  w-1/3">
+                    <td className="font-medium px-4 py-2  w-1/3">
                       Name:
                     </td>
                     <td className="px-4 py-2 border-r w-2">:</td>
                     <td className="px-4 py-2">{selectedCustomer.name}</td>
                   </tr>
                   <tr className="hover:bg-gray-100 transition border">
-                    <td className=" text-gray-800 font-medium px-4 py-2 ">
+                    <td className="font-medium px-4 py-2 ">
                       Mobile Number:
                     </td>
                     <td className="px-4 py-2 border-r w-2">:</td>
                     <td className="px-4 py-2">{selectedCustomer.mobile}</td>
                   </tr>
                   <tr className="hover:bg-gray-100 transition border">
-                    <td className=" text-gray-800 font-medium px-4 py-2 ">
+                    <td className=" font-medium px-4 py-2 ">
                       Address:
                     </td>
                     <td className="px-4 py-2 border-r w-2">:</td>
@@ -417,7 +418,7 @@ const Sales = () => {
           ) : (
             <table className="table-auto w-3/4 bg-white border border-gray-200 shadow-lg rounded-lg border-collapse">
               <thead>
-                <tr>
+                <tr className="bg-cyan-900 text-sm text-white">
                   <th className="border px-4 py-2 w-12">#</th>
                   <th className="border px-4 py-2 w-1/3">Product</th>
                   <th className="border px-4 py-2 w-24">Selling Price</th>
@@ -430,7 +431,7 @@ const Sales = () => {
               </thead>
               <tbody>
                 {selectedProducts.map((product, index) => (
-                  <tr key={index}>
+                  <tr className="text-cyan-900" key={index}>
                     {/* serial  */}
                     <td className="border px-4 py-2 text-center">
                       {index + 1}
@@ -453,7 +454,7 @@ const Sales = () => {
                       </div>
                     </td>
                     {/* selling price  */}
-                    <td className="border px-4 py-2">
+                    <td className="border px-4 py-2 text-white">
                       <input
                         type="number"
                         value={product.productPrice}
@@ -472,7 +473,7 @@ const Sales = () => {
                       {product.inStock}
                     </td>
                     {/* selling amount  */}
-                    <td className="border px-4 py-2">
+                    <td className="border px-4 py-2 text-white">
                       <input
                         type="number"
                         min="1"

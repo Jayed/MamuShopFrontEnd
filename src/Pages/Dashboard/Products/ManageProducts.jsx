@@ -139,14 +139,15 @@ const ManageProducts = () => {
       <div className="mx-16 mt-8 mb-4">
         <div className="overflow-x-auto">
           <table className="table w-full border border-gray-300">
-            <thead className="text-center bg-gray-300">
-              <tr className="font-bold text-xl border border-gray-300">
+            <thead className="text-center bg-cyan-900 text-white">
+              <tr className="text-base border border-cyan-300">
                 <th>Update</th>
                 <th>#</th>
                 <th>Category</th>
                 <th>Subcategory</th>
+                <th>Subsubcat.</th>
                 <th>Brand</th>
-                <th>Product Code</th>
+                <th>Pdt Code</th>
                 <th>In Stock</th>
                 <th>Stock Alert</th>
                 <th>Cost (RMB)</th>
@@ -159,7 +160,7 @@ const ManageProducts = () => {
               {currentItems.map((item, index) => (
                 <tr
                   key={item._id}
-                  className={`border border-gray-300 ${
+                  className={`text-cyan-950 border border-gray-300 ${
                     index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"
                   }`}
                 >
@@ -173,6 +174,7 @@ const ManageProducts = () => {
                   <td>{index + 1}</td>
                   <td>{item.category}</td>
                   <td>{item.subCategory}</td>
+                  <td>{item.subsubCategory}</td>
                   <td>{item.brand}</td>
                   <td>{item.productCode}</td>
                   <td>{item.inStock}</td>
