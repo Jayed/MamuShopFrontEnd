@@ -13,13 +13,22 @@ const SalesReport = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const getLast7Days = () => {
-    const today = new Date();
-    const last7Days = new Date();
-    last7Days.setDate(today.getDate() - 7);
+  // const getLast7Days = () => {
+  //   const today = new Date();
+  //   const last7Days = new Date();
+  //   last7Days.setDate(today.getDate() - 7);
+  //   return {
+  //     from: last7Days.toISOString().split("T")[0],
+  //     to: today.toISOString().split("T")[0],
+  //   };
+  // };
+  const getTodays = () => {
+    const todayEnd = new Date();
+    const todayStart = new Date();
+    todayStart.setDate(todayEnd.getDate() - 0);
     return {
-      from: last7Days.toISOString().split("T")[0],
-      to: today.toISOString().split("T")[0],
+      from: todayStart.toISOString().split("T")[0],
+      to: todayEnd.toISOString().split("T")[0],
     };
   };
 
@@ -41,7 +50,7 @@ const SalesReport = () => {
   };
 
   useEffect(() => {
-    const { from, to } = getLast7Days();
+    const { from, to } = getTodays();
     setFromDate(from);
     setToDate(to);
     fetchSalesReport(from, to);

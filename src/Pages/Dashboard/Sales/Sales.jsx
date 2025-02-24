@@ -454,7 +454,7 @@ const Sales = () => {
                       </div>
                     </td>
                     {/* selling price  */}
-                    <td className="border px-4 py-2 text-white">
+                    <td className="border px-4 py-2  text-white">
                       <input
                         type="number"
                         value={product.productPrice}
@@ -463,7 +463,7 @@ const Sales = () => {
                           handlePriceChange(index, e.target.value)
                         }
                         onWheel={(e) => e.preventDefault()} // Prevent mouse wheel increment/decrement
-                        className="input input-sm input-bordered w-20 text-right 
+                        className="bg-cyan-700 input input-sm input-bordered w-20 text-right 
                                   [&::-webkit-inner-spin-button]:appearance-none 
                                   [&::-webkit-outer-spin-button]:appearance-none"
                       />
@@ -486,7 +486,7 @@ const Sales = () => {
                             parseInt(e.target.value)
                           )
                         }
-                        className="input input-sm input-bordered max-w-16 text-right [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        className="bg-cyan-700 input input-sm input-bordered max-w-16 text-right [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       />
                     </td>
                     {/* Total Selling  */}
